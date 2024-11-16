@@ -33,7 +33,7 @@ const TableComponent = ({ orders }: { orders: any[] }) => {
 
   return (
     <div className="p-6 bg-[#16161a] rounded-lg shadow-lg min-h-screen relative">
-      <h2 className="text-2xl font-bold text-white mb-4">Transaction Table</h2>
+      <h2 className="text-2xl font-bold text-white mb-4">Intent Pool</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-700 bg-gray-800 rounded-lg overflow-hidden">
           {/* Table Header */}
