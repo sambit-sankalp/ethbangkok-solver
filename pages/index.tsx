@@ -30,12 +30,21 @@ export default function SignInPage() {
               <p className="mb-4 text-sm text-gray-400">
                 You are not signed in
               </p>
-              <button
-                onClick={() => signIn('worldcoin')} // Update provider as needed
-                className="px-8 py-4 bg-white text-black rounded-xl text-lg font-semibold transform transition hover:scale-105 hover:brightness-110 shadow-lg"
+              <a
+                href={`/api/auth/signin`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  signIn('worldcoin'); // when worldcoin is the only provider
+                  // signIn() // when there are multiple providers
+                }}
               >
-                Sign in with Worldcoin
-              </button>
+                <button
+                  onClick={() => signIn('worldcoin')} // Update provider as needed
+                  className="px-8 py-4 bg-white text-black rounded-xl text-lg font-semibold transform transition hover:scale-105 hover:brightness-110 shadow-lg"
+                >
+                  Sign in with Worldcoin
+                </button>
+              </a>
             </>
           )}
 
