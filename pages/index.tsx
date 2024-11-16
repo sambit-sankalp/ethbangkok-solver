@@ -1,13 +1,24 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default function SignInPage() {
   const { data: session, status } = useSession(); // Get the session data
+  const [showPopup, setShowPopup] = useState<boolean>(false);
   const loading = status === 'loading';
+  const router = useRouter();
 
   console.log(status, 'status');
   console.log('data', session);
+
+  // Function to handle stacking (dummy implementation)
+  const handleStacking = (): void => {
+    console.log('Stacking coins...');
+    alert('Coins stacked successfully!');
+    router.push('/intents')
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 text-white font-montserrat">
@@ -49,28 +60,40 @@ export default function SignInPage() {
           )}
 
           {session?.user && (
-            <div className="mt-6">
-              <div className="flex items-center justify-center gap-4">
-                {session.user.image && (
-                  <img
-                    src={session.user.image}
-                    alt="image"
-                    className="h-12 w-12 rounded-full shadow-lg"
-                  />
-                )}
-                <div>
-                  <p className="text-lg font-semibold">Welcome,</p>
-                  <p className="text-md font-medium text-gray-300">
-                    {session.user.email ?? session.user.name}
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+              <div className="bg-[#1e1e20] rounded-lg shadow-lg p-8 max-w-md w-full text-center relative">
+                {/* Close Button */}
+                <button
+                  onClick={() => router.push('/intents')}
+                  className="absolute top-4 right-4 text-white hover:text-gray-300 text-lg"
+                >
+                  ✖
+                </button>
+
+                {/* Popup Content */}
+                <div className="flex flex-col items-center space-y-6 mt-8">
+                  <h2 className="text-3xl font-sans font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-gradient">
+                    Stack Your Coins
+                  </h2>
+                  <p className="text-gray-400">
+                    Stack your coins to earn rewards and maximize your potential
+                    with PhoenixFi.
                   </p>
+
+                  {/* Staking Amount */}
+                  <p className="text-white text-3xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 bg-clip-text text-transparent">
+                    0.0001 ETH
+                  </p>
+
+                  {/* Stack Now Button */}
+                  <button
+                    onClick={handleStacking}
+                    className="w-full px-6 py-3 bg-white text-black rounded-md text-lg font-semibold transition-transform transform hover:scale-105"
+                  >
+                    Stack Now
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => signOut()}
-                className="mt-4 px-8 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 text-white rounded-xl text-lg font-semibold transform transition hover:scale-105 hover:brightness-110"
-              >
-                Sign Out
-              </button>
             </div>
           )}
 

@@ -28,8 +28,8 @@ const Navbar: React.FC = () => {
             <>
               {/* Truncated Address */}
               <span className="text-white text-sm">
-                {session.user?.email
-                  ? truncateAddress(session.user.email)
+                {session.user?.name
+                  ? truncateAddress(session.user.name)
                   : 'No Address'}
               </span>
               <button
