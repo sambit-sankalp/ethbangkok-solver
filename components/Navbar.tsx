@@ -27,10 +27,13 @@ const Navbar: React.FC = () => {
           {session ? (
             <>
               {/* Truncated Address */}
-              <span className="text-white text-sm">
-                {session.user?.name
-                  ? truncateAddress(session.user.name)
-                  : 'No Address'}
+              <span className="flex items-center space-x-2 px-4 py-2 border border-gray-500 rounded-full bg-[#242629] text-white text-sm shadow-md">
+                <span className="font-semibold">Hi,</span>
+                <span>
+                  {session.user?.name
+                    ? truncateAddress(session.user.name)
+                    : 'No Address'}
+                </span>
               </span>
               <button
                 onClick={() => signOut()}
