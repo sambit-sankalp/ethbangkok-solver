@@ -2,22 +2,72 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
+import { BrowserProvider, Contract, parseEther } from 'ethers';
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+
+const CONTRACT_ADDRESS = '0xEdCf8aFc8bfddA1ddb6309e92E53455E1169342A';
+const CONTRACT_ABI = [
+  {
+    inputs: [],
+    name: 'deposit',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getContractBalance',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
 
 export default function SignInPage() {
   const { data: session, status } = useSession(); // Get the session data
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const loading = status === 'loading';
   const router = useRouter();
 
-  console.log(status, 'status');
-  console.log('data', session);
+  const handleStacking = async () => {
+    try {
+      if (!window.ethereum) {
+        toast.error('MetaMask is not installed!');
+        return;
+      }
 
-  // Function to handle stacking (dummy implementation)
-  const handleStacking = (): void => {
-    console.log('Stacking coins...');
-    alert('Coins stacked successfully!');
-    router.push('/intents')
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+
+      const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+      setIsProcessing(true);
+      toast.loading('Processing your stake...');
+      const tx = await contract.deposit({ value: parseEther('0.0001') });
+      await tx.wait();
+
+      toast.dismiss();
+      toast.success('Staking successful! Redirecting...');
+      setTimeout(() => {
+        router.push('/intentspool');
+      }, 2000);
+    } catch (error: any) {
+      toast.dismiss();
+      console.error(error);
+      toast.error(`Transaction failed: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -64,7 +114,7 @@ export default function SignInPage() {
               <div className="bg-[#1e1e20] rounded-lg shadow-lg p-8 max-w-md w-full text-center relative">
                 {/* Close Button */}
                 <button
-                  onClick={() => router.push('/intents')}
+                  onClick={() => router.push('/intentspool')}
                   className="absolute top-4 right-4 text-white hover:text-gray-300 text-lg"
                 >
                   ✖
