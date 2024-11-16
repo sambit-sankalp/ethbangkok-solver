@@ -1,6 +1,16 @@
 import React from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
+  const { data: session } = useSession();
+
+  // Function to truncate address
+  const truncateAddress = (address: string): string => {
+    return `${address.substring(0, 6)}...${address.substring(
+      address.length - 4
+    )}`;
+  };
+
   return (
     <header className="w-full sticky top-0 shrink-0 z-20 bg-[#16161a] shadow-md">
       <div className="flex items-center justify-between h-20 max-w-7xl mx-auto px-6">
@@ -14,9 +24,38 @@ const Navbar = () => {
 
         {/* Buttons */}
         <div className="flex items-center space-x-4">
-          <button className="px-5 py-2 bg-white text-black font-medium text-sm rounded-full hover:from-purple-600 hover:via-pink-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black shadow-md transition-all">
-            Log out
-          </button>
+          {session ? (
+            <>
+              {/* Truncated Address */}
+              <span className="text-white text-sm">
+                {session.user?.email
+                  ? truncateAddress(session.user.email)
+                  : 'No Address'}
+              </span>
+              <button
+                onClick={() => signOut()}
+                className="px-5 py-2 bg-white text-black font-medium text-sm rounded-full hover:from-purple-600 hover:via-pink-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black shadow-md transition-all"
+              >
+                Log Out
+              </button>
+            </>
+          ) : (
+            <a
+              href={`/api/auth/signin`}
+              onClick={(e) => {
+                e.preventDefault();
+                signIn('worldcoin'); // when worldcoin is the only provider
+                // signIn() // when there are multiple providers
+              }}
+            >
+              <button
+                onClick={() => signIn('worldcoin')}
+                className="px-5 py-2 bg-white text-black font-medium text-sm rounded-full hover:from-purple-600 hover:via-pink-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black shadow-md transition-all"
+              >
+                Log In
+              </button>
+            </a>
+          )}
         </div>
       </div>
     </header>
