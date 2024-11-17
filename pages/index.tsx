@@ -129,7 +129,7 @@ export default function SignInPage() {
                   </h2>
                   <p className="text-gray-400">
                     Stack your coins to earn rewards and maximize your potential
-                    with PhoenixFi.
+                    with IntentFlow.
                   </p>
 
                   {/* Staking Amount */}
@@ -161,7 +161,7 @@ export default function SignInPage() {
             <ul className="text-gray-300 text-left list-disc list-inside space-y-2">
               <li>Access exclusive solver functionalities.</li>
               <li>Securely manage your transactions and rewards.</li>
-              <li>Be part of the PhoenixFi solver ecosystem.</li>
+              <li>Be part of the IntentFlow solver ecosystem.</li>
             </ul>
           </div>
           <div className="p-6 bg-[#242629] rounded-xl shadow-lg max-w-lg w-full sm:w-[45%] h-full">
