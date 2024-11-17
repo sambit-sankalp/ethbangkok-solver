@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
+  const [toastMessage, setToastMessage] = useState<string | null>(null); // State for toast
 
   // Function to truncate address
   const truncateAddress = (address: string): string => {
     return `${address.substring(0, 6)}...${address.substring(
       address.length - 4
     )}`;
+  };
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setToastMessage('Copied to clipboard!'); // Set toast message
+    setTimeout(() => setToastMessage(null), 3000); // Hide toast after 3 seconds
   };
 
   return (
@@ -27,7 +34,13 @@ const Navbar: React.FC = () => {
           {session ? (
             <>
               {/* Truncated Address */}
-              <span className="flex items-center space-x-2 px-4 py-2 border border-gray-500 rounded-full bg-[#242629] text-white text-sm shadow-md">
+              <span
+                className="flex items-center space-x-2 px-4 py-2 border border-gray-500 rounded-full bg-[#242629] text-white text-sm shadow-md cursor-pointer hover:bg-gray-700 transition-all"
+                onClick={() =>
+                  session.user?.name && handleCopy(session.user.name)
+                } // Copy address on click
+                title="Click to copy address"
+              >
                 <span className="font-semibold">Hi,</span>
                 <span>
                   {session.user?.name
@@ -48,7 +61,6 @@ const Navbar: React.FC = () => {
               onClick={(e) => {
                 e.preventDefault();
                 signIn('worldcoin'); // when worldcoin is the only provider
-                // signIn() // when there are multiple providers
               }}
             >
               <button
@@ -61,6 +73,13 @@ const Navbar: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-[#7f5af0] text-white px-6 py-2 rounded-lg shadow-lg transition-opacity duration-300 opacity-100">
+          {toastMessage}
+        </div>
+      )}
     </header>
   );
 };

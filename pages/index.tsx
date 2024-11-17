@@ -56,6 +56,8 @@ export default function SignInPage() {
       const tx = await contract.deposit({ value: parseEther('0.0001') });
       await tx.wait();
 
+      console.log(session?.user?.name);
+
       toast.dismiss();
       toast.success('Staking successful! Redirecting...');
       setTimeout(() => {
@@ -123,10 +125,10 @@ export default function SignInPage() {
                 {/* Popup Content */}
                 <div className="flex flex-col items-center space-y-6 mt-8">
                   <h2 className="text-3xl font-sans font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-gradient">
-                    Stack Your Coins
+                    Stake Your Coins
                   </h2>
                   <p className="text-gray-400">
-                    Stack your coins to earn rewards and maximize your potential
+                    Stake your coins to earn rewards and maximize your potential
                     with IntentFlow.
                   </p>
 
@@ -140,7 +142,7 @@ export default function SignInPage() {
                     onClick={handleStacking}
                     className="w-full px-6 py-3 bg-white text-black rounded-md text-lg font-semibold transition-transform transform hover:scale-105"
                   >
-                    Stack Now
+                    Stake Now
                   </button>
                 </div>
               </div>
