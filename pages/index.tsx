@@ -56,6 +56,8 @@ export default function SignInPage() {
       const tx = await contract.deposit({ value: parseEther('0.0001') });
       await tx.wait();
 
+      console.log(session?.user?.name);
+
       toast.dismiss();
       toast.success('Staking successful! Redirecting...');
       setTimeout(() => {

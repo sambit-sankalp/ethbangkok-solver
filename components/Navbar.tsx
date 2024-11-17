@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
+  const [toastMessage, setToastMessage] = useState<string | null>(null); // State for toast
 
   // Function to truncate address
   const truncateAddress = (address: string): string => {
@@ -10,6 +11,12 @@ const Navbar: React.FC = () => {
       address.length - 4
     )}`;
   };
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setToastMessage('Copied to clipboard!'); // Set toast message
+    setTimeout(() => setToastMessage(null), 3000); // Hide toast after 3 seconds
+  }; 
 
   return (
     <header className="w-full sticky top-0 shrink-0 z-20 bg-[#16161a] shadow-md">

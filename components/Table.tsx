@@ -29,7 +29,7 @@ const TableComponent = ({ orders }: { orders: any[] }) => {
     navigator.clipboard.writeText(text);
     setToastMessage('Copied to clipboard!'); // Set toast message
     setTimeout(() => setToastMessage(null), 3000); // Hide toast after 3 seconds
-  };
+  };  
 
   return (
     <div className="p-6 bg-[#16161a] rounded-lg shadow-lg min-h-screen relative">
