@@ -15,7 +15,7 @@ function SolverPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:3001/orders'); // Replace with your backend URL
+        const response = await fetch('http://127.0.0.1:3003/orders'); // Replace with your backend URL
         if (!response.ok) {
           throw new Error('Failed to fetch orders');
         }
